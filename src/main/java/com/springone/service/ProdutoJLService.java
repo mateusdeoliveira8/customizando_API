@@ -131,4 +131,9 @@ public class ProdutoJLService {
 
 	}
 
+	public ProdutoJL buscarPorid(Long id) {
+		return produtojLRepository.buscarCompleto(id);
+
+	}
+
 }

@@ -1,5 +1,6 @@
 package com.springone.entity;
 
+
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
@@ -9,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Transient;
 
 @Entity
 @SequenceGenerator(name = "seq_compravenda", sequenceName = "seq_compravenda", allocationSize = 1, initialValue = 1)
@@ -76,6 +78,11 @@ public class ItemProdutoVenda {
 
 	public void setVendaCompra(VendaCompra vendaCompra) {
 		this.vendaCompra = vendaCompra;
+	}
+
+	@Transient
+	public void calcularValor() {
+		this.valor = (quantidade * produtoJL.getPreco()) - this.desconto;
 	}
 
 }

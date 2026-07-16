@@ -1,6 +1,8 @@
 package com.springone.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
@@ -10,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 
 @Entity
@@ -25,12 +28,24 @@ public class VendaCompra {
 	private String observacao;
 	private Date data;
 
+
 	@ManyToOne
 	@JoinColumn(name = "pessoa_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "pessoa_fk"))
 	private Pessoa pessoa;
 
+	@OneToMany(mappedBy = "vendaCompra")
+	List<ItemProdutoVenda> ItensProdutos = new ArrayList<ItemProdutoVenda>();
+
 	public Long getId() {
 		return id;
+	}
+
+	public List<ItemProdutoVenda> getItensProdutos() {
+		return ItensProdutos;
+	}
+
+	public void setItensProdutos(List<ItemProdutoVenda> itensProdutos) {
+		ItensProdutos = itensProdutos;
 	}
 
 	public void setId(Long id) {
@@ -77,4 +92,22 @@ public class VendaCompra {
 		this.pessoa = pessoa;
 	}
 
+	public void calcularValor() {
+
+		this.totalVendaFinal = 0;
+
+		for (ItemProdutoVenda itemProdutoVenda : ItensProdutos) {
+			totalVendaFinal += itemProdutoVenda.getValor();
+		}
+	}
+
+	public void calcularDesconto() {
+
+		this.desconto = 0;
+
+		for (ItemProdutoVenda itemProdutoVenda : ItensProdutos) {
+
+			desconto += itemProdutoVenda.getDesconto();
+		}
+	}
 }

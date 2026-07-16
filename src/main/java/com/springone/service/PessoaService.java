@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.springone.dto.CadastroDTO;
 import com.springone.dto.EnderecoDTO;
-import com.springone.entity.Pessoa;
 import com.springone.entity.Endereco;
+import com.springone.entity.Pessoa;
 import com.springone.exception.MsgApiException;
 import com.springone.repository.PessoaRepository;
 
@@ -23,14 +23,14 @@ public class PessoaService {
 	public Pessoa salvarCadastro(Pessoa pessoa) {
 
 		if (pessoa.getNome() == null || pessoa.getNome().isBlank()) {
-			throw new MsgApiException("erro");
+			throw new MsgApiException("Nome deve ser informado");
 		}
 
 		List<Pessoa> lista = pessoaRepository.findAll();
 
 		for (Pessoa cadastroCPF : lista) {
 			if (cadastroCPF.getCpf().equals(pessoa.getCpf())) {
-				throw new MsgApiException("erro");
+				throw new MsgApiException("CPF ja existe");
 			}
 		}
 

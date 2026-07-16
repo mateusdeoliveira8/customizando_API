@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.springone.app.SpringoneApplication;
 
@@ -13,7 +12,7 @@ import com.springone.app.SpringoneApplication;
 @AutoConfigureMockMvc(addFilters = false) /*COnfiguraão automatica do spring*/
 //@TestPropertySource(locations = "classpath:application-dev.properties")
 @SpringBootTest(classes = SpringoneApplication.class)
-@Transactional
+//@Transactional
 public class TestContextoSpring {
 	
 	
