@@ -14,4 +14,10 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
 	@Query("SELECT p FROM Pessoa p WHERE LOWER(p.nome) LIKE LOWER(CONCAT('%', :nome, '%'))")
 	List<Pessoa> buscarPorNome(@Param("nome") String nome);
 
+	@Query("select p FROM Pessoa p WHERE p.cpf = :cpf")
+	Pessoa buscaporCPF(@Param("cpf") String cpf);
+
+	@Query("select count(p.id) > 0 FROM Pessoa p WHERE p.cpf = :cpf")
+	boolean existeCPF(@Param("cpf") String cpf);
+
 }

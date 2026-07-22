@@ -6,6 +6,7 @@ import java.util.List;
 
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,7 +34,7 @@ public class VendaCompra {
 	@JoinColumn(name = "pessoa_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "pessoa_fk"))
 	private Pessoa pessoa;
 
-	@OneToMany(mappedBy = "vendaCompra")
+	@OneToMany(mappedBy = "vendaCompra", fetch = FetchType.EAGER)
 	List<ItemProdutoVenda> ItensProdutos = new ArrayList<ItemProdutoVenda>();
 
 	public Long getId() {

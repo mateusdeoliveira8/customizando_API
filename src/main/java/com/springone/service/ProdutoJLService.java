@@ -136,4 +136,9 @@ public class ProdutoJLService {
 
 	}
 
+	public void baixarEstoque(Long idProduto, int qtdVendida) {
+
+		produtojLRepository.baixarEstoque(idProduto, qtdVendida);
+	}
+
 }

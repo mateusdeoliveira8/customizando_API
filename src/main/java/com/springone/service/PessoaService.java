@@ -26,12 +26,8 @@ public class PessoaService {
 			throw new MsgApiException("Nome deve ser informado");
 		}
 
-		List<Pessoa> lista = pessoaRepository.findAll();
-
-		for (Pessoa cadastroCPF : lista) {
-			if (cadastroCPF.getCpf().equals(pessoa.getCpf())) {
-				throw new MsgApiException("CPF ja existe");
-			}
+		if (pessoaRepository.existeCPF(pessoa.getCpf())) {
+			throw new MsgApiException("já existe uma pessoa com esse cpf");
 		}
 
 		return pessoaRepository.save(pessoa);
@@ -86,16 +82,7 @@ public class PessoaService {
 
 	public Pessoa buscarPorCPF(String cpf) {
 
-		List<Pessoa> pessoas = pessoaRepository.findAll();
-
-		for (Pessoa pessoa : pessoas) {
-
-			if (pessoa.getCpf().equals(cpf)) {
-				return pessoa;
-			}
-		}
-
-		throw new MsgApiException("Cadastro nao encontrado!");
+		return pessoaRepository.buscaporCPF(cpf);
 	}
 
 	public List<CadastroDTO> listaCadastro() {
