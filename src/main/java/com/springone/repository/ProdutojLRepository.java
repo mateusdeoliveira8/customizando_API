@@ -26,6 +26,11 @@ public interface ProdutojLRepository extends JpaRepository<ProdutoJL, Long> {
 	@Query("update ProdutoJL set quantidade = quantidade - :qtdVendida  where id = :idProduto")
 	void baixarEstoque(@Param("idProduto") Long idProduto, @Param("qtdVendida") int qtdVendida);
 
+	@Transactional
+	@Modifying
+	@Query("update ProdutoJL set quantidade = quantidade + :qtdVendida  where id = :idProduto")
+	void adicionarEstoque(@Param("idProduto") Long idProduto, @Param("qtdVendida") int qtdVendida);
+
 	@Query("select p.quantidade > 0 from ProdutoJL p where p.id = :idProduto")
 	boolean possuiEstoque(@Param("idProduto") Long idProduto);
 

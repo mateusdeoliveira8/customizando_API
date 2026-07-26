@@ -131,14 +131,46 @@ public class ProdutoJLService {
 
 	}
 
+	// Busca um ProdutoJL completo pelo ID.
+	// (Nome do método com "P" minúsculo em "por" — "buscarPorid" —
+	// foge um pouco do padrão camelCase (o ideal seria "buscarPorId"),
+	// mas não afeta o funcionamento.)
 	public ProdutoJL buscarPorid(Long id) {
-		return produtojLRepository.buscarCompleto(id);
 
+		// Chama um método customizado do repository chamado "buscarCompleto".
+		// O nome sugere que essa query traz o produto já com seus relacionamentos
+		// carregados (ex: categoria, fornecedor, itens de venda, etc.),
+		// diferente de um findById() simples que só traz os dados da própria tabela.
+		return produtojLRepository.buscarCompleto(id);
 	}
 
+	// Método responsável por DAR BAIXA no estoque de um produto após uma venda.
+	// Recebe o ID do produto e a quantidade vendida.
 	public void baixarEstoque(Long idProduto, int qtdVendida) {
 
+		// Delega a lógica de subtração do estoque para o repository.
+		// Provavelmente é uma query customizada (@Modifying + @Query) que faz
+		// algo como: UPDATE produto SET estoque = estoque - qtdVendida WHERE id =
+		// idProduto.
+		// Não retorna nada (void) — a suposição é que a query já executa o UPDATE
+		// diretamente no banco, sem precisar carregar e devolver o objeto atualizado.
 		produtojLRepository.baixarEstoque(idProduto, qtdVendida);
 	}
 
+	// Método responsável por ADICIONAR estoque a um produto (ex: reposição).
+	// Mesma lógica do método anterior, só que somando em vez de subtraindo.
+	public void adicionarEstoque(Long idProduto, int qtdVendida) {
+
+		// Query customizada no repository, provavelmente:
+		// UPDATE produto SET estoque = estoque + qtdVendida WHERE id = idProduto.
+		produtojLRepository.adicionarEstoque(idProduto, qtdVendida);
+	}
+
+	// Método que, pelo nome, DEVERIA verificar se um produto possui estoque
+	// disponível.
+	public void possuiEstoque(Long idProduto) {
+
+		// Chama o método do repository, mas não faz nada com o resultado dele.
+		produtojLRepository.possuiEstoque(idProduto);
+	}
 }

@@ -9,28 +9,43 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
-@Entity
+@Entity // Mapeia essa classe para uma tabela do banco.
 public class Endereco {
 
 	@Id
+	// IDENTITY: o próprio banco gera o ID via auto-incremento da coluna
+	// (diferente da Categoria1, que usava uma SEQUENCE explícita).
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	// Campos simples, sem validação (@NotNull/@NotBlank) — diferente da
+	// Categoria1, aqui não há nenhuma restrição de preenchimento obrigatório.
 	private String rua;
 	private int numero;
 	private String bairro;
 	private String cidade;
 	private String uf;
+
+	// Relação N:1 -> vários Endereços pertencem a UMA Pessoa.
 	@ManyToOne
+	// Cria a coluna de chave estrangeira "pessoa_id" nessa tabela.
+	// nullable = false -> todo endereço OBRIGATORIAMENTE precisa estar
+	// vinculado a uma pessoa (não pode existir endereço "solto").
 	@JoinColumn(name = "pessoa_id", nullable = false)
+	// @JsonIgnoreProperties sem parâmetros não faz nada sozinho — precisa
+	// especificar QUAIS propriedades ignorar, ex:
+	// @JsonIgnoreProperties("enderecos").
+	// Do jeito que está, é código morto (não tem efeito real na serialização).
 	@JsonIgnoreProperties
 	private Pessoa pessoa;
 
-	
-
+	// Construtor vazio manual (aqui não usou Lombok @NoArgsConstructor como na
+	// outra entidade — inconsistência de padrão entre as classes do projeto).
 	public Endereco() {
 		super();
 	}
 
+	// Getters e setters padrão.
 	public Long getId() {
 		return id;
 	}
@@ -38,7 +53,6 @@ public class Endereco {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
 
 	public String getRua() {
 		return rua;

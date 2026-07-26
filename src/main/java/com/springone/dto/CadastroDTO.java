@@ -11,11 +11,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+// DTO (Data Transfer Object): representa os dados de Pessoa formatados
+// especificamente para SAÍDA da API, sem expor a entidade JPA diretamente
+// (evita vazar detalhes internos, relacionamentos lazy, etc.)
+
+// @Data gera automaticamente getters, setters, equals(), hashCode() e toString()
+// — só que aqui os getters/setters TAMBÉM foram escritos manualmente logo abaixo,
+// então tá duplicado: @Data já geraria tudo isso sozinho, os @Getter/@Setter
+// explícitos e os métodos manuais são redundantes entre si.
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
+@AllArgsConstructor // Gera construtor com TODOS os campos como parâmetros.
+@NoArgsConstructor // Gera construtor vazio.
+@Getter // Redundante: @Data já inclui isso.
+@Setter // Redundante: @Data já inclui isso.
 public class CadastroDTO {
 
 	private Long id;
@@ -25,6 +33,10 @@ public class CadastroDTO {
 	private String cargo;
 	private List<EnderecoDTO> enderecoDTOs = new ArrayList<EnderecoDTO>();
 
+	// Construtor customizado: converte uma Pessoa (entidade) em CadastroDTO,
+	// copiando campo a campo. Só não copia "enderecoDTOs" aqui — essa lista
+	// é preenchida depois, manualmente, no PessoaService.listaCadastro()
+	// (que vimos lá atrás), iterando os Endereco da Pessoa.
 	public CadastroDTO(Pessoa cadasto) {
 		super();
 		this.id = cadasto.getId();
@@ -34,6 +46,7 @@ public class CadastroDTO {
 		this.cargo = cadasto.getCargo();
 	}
 
+	// Getters e setters manuais (redundantes com @Data/@Getter/@Setter acima).
 	public Long getId() {
 		return id;
 	}
@@ -81,5 +94,4 @@ public class CadastroDTO {
 	public void setEnderecoDTOs(List<EnderecoDTO> enderecoDTOs) {
 		this.enderecoDTOs = enderecoDTOs;
 	}
-
 }
