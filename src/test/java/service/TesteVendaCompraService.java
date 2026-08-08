@@ -2,7 +2,11 @@ package service; // Define o pacote onde esta classe de teste está localizada.
 
 import static org.junit.jupiter.api.Assertions.assertEquals; // Importa o método assertEquals, utilizado para comparar o resultado esperado com o resultado obtido durante o teste.
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar; // Importa a classe Calendar para obter a data e hora atual.
+import java.util.Date;
+import java.util.List;
 
 import org.junit.jupiter.api.Test; // Indica que o método será executado como um teste unitário.
 import org.junit.jupiter.api.extension.ExtendWith; // Permite utilizar extensões do JUnit.
@@ -37,7 +41,7 @@ public class TesteVendaCompraService extends TestContextoSpring { // Classe resp
 	ItemProdutoVendaService itemProdutoVendaService; // Injeta o serviço responsável pelos itens da venda.
 
 	@Test // Define que este método será executado como teste.
-	public void teste() {
+	public void testeProcessoVenda() {
 
 		System.out.println("Testando teste"); // Apenas imprime uma mensagem para indicar que o teste iniciou.
 
@@ -72,7 +76,9 @@ public class TesteVendaCompraService extends TestContextoSpring { // Classe resp
 		vendaCompra.setData(Calendar.getInstance().getTime());
 
 		// Salva a venda para que ela seja registrada no banco de dados.
-		vendaCompra = vendaCompraService.salvar(vendaCompra);
+
+		vendaCompra = vendaCompraService.prepersiste(vendaCompra);
+
 
 		// Cria o primeiro item da venda.
 		ItemProdutoVenda itemProdutoVenda = new ItemProdutoVenda();
@@ -174,5 +180,73 @@ public class TesteVendaCompraService extends TestContextoSpring { // Classe resp
 		// Confirma se o valor do segundo item foi calculado corretamente.
 		assertEquals(4998.00, itemProdutoVenda2.getValor());
 
+
+
+	}
+
+	@Test
+	public void testeMetods() {
+
+		// Chama o Service para buscar as vendas
+		// realizadas pelo cliente chamado "mateus".
+		// O método retorna uma lista de vendas.
+		List<VendaCompra> vendaCompras = vendaCompraService.buscarVendaPorNomeDoCliente("mateus");
+
+		// Percorre cada venda encontrada na lista.
+		for (VendaCompra vendaCompra : vendaCompras) {
+
+			// Pega o ID da venda e o nome do cliente
+			// relacionado a essa venda.
+			System.out.println(vendaCompra.getId() + vendaCompra.getPessoa().getNome());
+		}
+	}
+
+	@Test
+	public void buscarPorData() throws ParseException {
+
+		// Define o formato da data que será utilizada.
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+		// Converte a String para um objeto Date.
+		// O parse() pode gerar ParseException caso a data seja inválida.
+		Date date = sdf.parse("2026-07-14");
+
+		// Envia a data para o Service, que realiza a busca das vendas.
+		// Pode retornar várias vendas realizadas nessa data.
+		List<VendaCompra> buscaData = vendaCompraService.buscarVendaPorData(date);
+
+		// Percorre todas as vendas encontradas.
+		for (VendaCompra vendaCompra : buscaData) {
+
+			// Mostra a data de cada venda encontrada.
+			System.out.println("Data: " + vendaCompra.getData());
+		}
+	}
+
+	@Test
+	public void buscarVendaPorProduto() {
+
+		// Busca as vendas que possuem o produto informado.
+		// O retorno é uma lista porque podem existir várias vendas com "tv".
+		List<VendaCompra> pesquisarVenda = vendaCompraService.buscarVendaPorProduto("tv");
+
+		// Percorre cada venda encontrada.
+		for (VendaCompra vendaCompra : pesquisarVenda) {
+
+			// Mostra os itens/produtos que pertencem à venda atual.
+			System.out.println("PESQUISA: " + vendaCompra.getItensProdutos());
+
+			// Uma venda pode possuir vários itens.
+			// Por isso, percorremos a lista de itens dessa venda.
+			for (ItemProdutoVenda item : vendaCompra.getItensProdutos()) {
+
+				// Acessa o produto relacionado ao item
+				// e mostra o nome e o preço do produto.
+				System.out.println("Produto: " + item.getProdutoJL().getNome() + " " + item.getProdutoJL().getPreco());
+
+				// Apenas uma linha para separar os resultados no console.
+				System.out.println("----------------------------------------------------------------------------");
+			}
+		}
 	}
 }

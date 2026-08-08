@@ -2,7 +2,6 @@ package com.springone.repository;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,7 +16,10 @@ public interface VendaCompraRepository extends JpaRepository<VendaCompra, Long> 
 	@Query("select v from VendaCompra v join v.pessoa  p where lower(p.nome) = :nome")
 	List<VendaCompra> buscarVendaPorNomeDoCliente(@Param("nome") String nome);
 	
-	@Query("select v from VendaCompra v where v.data = :data ")
-	Optional<VendaCompra> buscarVendaPorData(@Param("data") Date data);
+	@Query("select v from VendaCompra v where cast(v.data as date)  = :data ")
+	List<VendaCompra> buscarVendaPorData(@Param("data") Date data);
+
+	@Query("select distinct i.vendaCompra from ItemProdutoVenda i where lower(i.produtoJL.nome) like lower(concat('%', :nome, '%'))")
+	List<VendaCompra> buscarVendaPorProduto(@Param("nome") String nome);
 
 }

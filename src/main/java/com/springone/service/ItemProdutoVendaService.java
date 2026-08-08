@@ -16,4 +16,9 @@ public class ItemProdutoVendaService {
 		return itemProdutoVendaRepository.save(itemProdutoVenda);
 	}
 
+	public void excluir(Long id) {
+
+		itemProdutoVendaRepository.deleteById(id);
+	}
+
 }

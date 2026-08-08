@@ -2,7 +2,6 @@ package com.springone.service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +19,10 @@ public class VendaCompraService {
 	// Injeção de dependência do repository responsável por acessar
 	// a entidade VendaCompra no banco de dados.
 	VendaCompraRepository vendaCompraRepository;
+
+	public VendaCompra prepersiste(VendaCompra vendaCompra) {
+		return vendaCompraRepository.save(vendaCompra);
+	}
 
 	// Método responsável por SALVAR uma venda/compra, com várias validações
 	// de negócio antes de persistir no banco.
@@ -96,8 +99,17 @@ public class VendaCompraService {
 	// Busca vendas realizadas em uma determinada data.
 	// Retorna um Optional<VendaCompra> — um "envelope" que pode conter
 	// o resultado ou estar vazio, evitando retornar null diretamente.
-	public Optional<VendaCompra> buscarVendaPorData(Date data) {
+	public List<VendaCompra> buscarVendaPorData(Date data) {
 		return vendaCompraRepository.buscarVendaPorData(data);
+	}
+
+	public List<VendaCompra> buscarVendaPorProduto(String nome) {
+		return vendaCompraRepository.buscarVendaPorProduto(nome);
+
+	}
+
+	public void deletar(Long id) {
+		vendaCompraRepository.deleteById(id);
 	}
 
 }

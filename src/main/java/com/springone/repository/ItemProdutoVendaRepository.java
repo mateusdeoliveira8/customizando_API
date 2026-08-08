@@ -8,4 +8,5 @@ import com.springone.entity.ItemProdutoVenda;
 @Repository
 public interface ItemProdutoVendaRepository extends JpaRepository<ItemProdutoVenda, Long> {
 
+
 }
