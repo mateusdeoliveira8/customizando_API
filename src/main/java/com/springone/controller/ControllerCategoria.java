@@ -58,15 +58,15 @@ public class ControllerCategoria {
 
 	// GET /api/categoria/listar -> retorna todas as categorias cadastradas.
 	@GetMapping("/listar")
-	public ResponseEntity<List<Categoria1>> listarCategoria() {
+	public ResponseEntity<List<Categoria1>> listarCategorias() {
 		return ResponseEntity.ok(categoria1Service.listarCategorias());
 	}
 
-	// PUT /api/categoria/atualizar/{id} -> atualiza uma categoria específica pelo
+	// PUT /api/categoria/atualizar/{id} -> atoualiza uma categoria específica pelo
 	// ID.
 	// @PathVariable extrai o {id} da URL.
 	@PutMapping("/atualizar/{id}")
-	public ResponseEntity<Categoria1> atualizar(@PathVariable Long id, @RequestBody Categoria1 categoria1) {
+	public ResponseEntity<Categoria1> atualizarCategoria(@PathVariable Long id, @RequestBody Categoria1 categoria1) {
 		return ResponseEntity.ok(categoria1Service.atualizarCategoria(id, categoria1));
 	}
 
@@ -76,7 +76,7 @@ public class ControllerCategoria {
 	// ("atualizar" em vez de "atualizarCategoria") — parece um endpoint duplicado/
 	// alternativo ao de cima, talvez sobra de refatoração ou teste.
 	@PutMapping("/atualizar2")
-	public ResponseEntity<Categoria1> atualizar2(@RequestBody Categoria1 categoria1) {
+	public ResponseEntity<Categoria1> atualizar(@RequestBody Categoria1 categoria1) {
 		return ResponseEntity.ok(categoria1Service.atualizar(categoria1));
 	}
 

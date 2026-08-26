@@ -45,6 +45,7 @@ public class VendaCompra {
 	// Campo sem "private" (visibilidade default) e com "I" maiúsculo em
 	// "ItensProdutos" — foge da convenção Java (deveria ser "itensProdutos",
 	// minúsculo).
+	// @JsonIgnore
 	@OneToMany(mappedBy = "vendaCompra", fetch = FetchType.EAGER)
 	List<ItemProdutoVenda> ItensProdutos = new ArrayList<ItemProdutoVenda>();
 
@@ -53,6 +54,8 @@ public class VendaCompra {
 		return id;
 	}
 
+	// @JsonIgnore
+	// @JsonBackReference
 	public List<ItemProdutoVenda> getItensProdutos() {
 		return ItensProdutos;
 	}

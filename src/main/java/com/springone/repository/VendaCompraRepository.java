@@ -22,4 +22,6 @@ public interface VendaCompraRepository extends JpaRepository<VendaCompra, Long> 
 	@Query("select distinct i.vendaCompra from ItemProdutoVenda i where lower(i.produtoJL.nome) like lower(concat('%', :nome, '%'))")
 	List<VendaCompra> buscarVendaPorProduto(@Param("nome") String nome);
 
+
+
 }

@@ -46,7 +46,7 @@ public class ControllerEndereco {
 	// ATUALIZAR Endereco
 	// ==========================
 	@PutMapping("/atualizar/{id}")
-	public Endereco atualizar(@PathVariable Long id, @RequestBody Endereco Endereco) {
+	public Endereco atualizarEndereco(@PathVariable Long id, @RequestBody Endereco Endereco) {
 
 		return enderecoService.atualizarEndereco(id, Endereco);
 	}
@@ -60,6 +60,11 @@ public class ControllerEndereco {
 	public ResponseEntity<Endereco> buscarPorId(@PathVariable Long id, @RequestBody Endereco endereco) {
 
 		return ResponseEntity.ok(enderecoService.buscarPorId(id));
+	}
+
+	public ResponseEntity<Void> deletarEndereco(@RequestBody Long id) {
+		enderecoService.deletarEndereco(id);
+		return ResponseEntity.ok().build();
 	}
 
 

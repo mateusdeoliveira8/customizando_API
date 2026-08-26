@@ -224,29 +224,19 @@ public class TesteVendaCompraService extends TestContextoSpring { // Classe resp
 	}
 
 	@Test
-	public void buscarVendaPorProduto() {
+	public void buscarVendaPorProduto1() {
 
-		// Busca as vendas que possuem o produto informado.
-		// O retorno é uma lista porque podem existir várias vendas com "tv".
-		List<VendaCompra> pesquisarVenda = vendaCompraService.buscarVendaPorProduto("tv");
 
-		// Percorre cada venda encontrada.
-		for (VendaCompra vendaCompra : pesquisarVenda) {
+		List<ItemProdutoVenda> pesquisarVenda = itemProdutoVendaService.buscarVendaPorProduto1("tv");
 
-			// Mostra os itens/produtos que pertencem à venda atual.
-			System.out.println("PESQUISA: " + vendaCompra.getItensProdutos());
 
-			// Uma venda pode possuir vários itens.
-			// Por isso, percorremos a lista de itens dessa venda.
-			for (ItemProdutoVenda item : vendaCompra.getItensProdutos()) {
+		for (ItemProdutoVenda itemproduto : pesquisarVenda) {
 
-				// Acessa o produto relacionado ao item
-				// e mostra o nome e o preço do produto.
-				System.out.println("Produto: " + item.getProdutoJL().getNome() + " " + item.getProdutoJL().getPreco());
+			System.out.println("Pessoa: " + itemproduto.getVendaCompra().getPessoa().getNome());
+			System.out.println("codigo: " + itemproduto.getVendaCompra().getId());
+			System.out.println("Produtos: " + itemproduto.getProdutoJL().getNome());
 
-				// Apenas uma linha para separar os resultados no console.
-				System.out.println("----------------------------------------------------------------------------");
-			}
+
 		}
 	}
 }

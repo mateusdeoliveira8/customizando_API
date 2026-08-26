@@ -10,6 +10,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Pessoa {
@@ -18,9 +20,19 @@ public class Pessoa {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+
+	@NotBlank(message = "O nome deve ser informado")
+
 	private String nome;
+
 	private String idade; // String em vez de int — evita erro de parsing, mas não valida se é número
+
+	@NotBlank(message = "O CPF deve ser informado")
+	@Size(min = 11, max = 11, message = "O CPF deve ter 11 dígitos")
 	private String cpf;
+
+
+	@NotBlank(message = "O cargo deve ser informado")
 	private String cargo;
 
 	// 1 Pessoa -> N Endereços.

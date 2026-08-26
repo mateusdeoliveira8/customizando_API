@@ -10,6 +10,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Transient;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 // TABELA ASSOCIATIVA (de junção) entre ProdutoJL e VendaCompra.
 // Resolve o relacionamento N:N "um produto pode estar em várias vendas,
@@ -28,8 +30,12 @@ public class ItemProdutoVenda {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_compravenda")
 	private Long id;
 
+	@Positive(message = "A quantidade deve ser maior que zero")
 	private int quantidade;
+
+	@Positive(message = "O valor deve ser maior que zero")
 	private double valor;
+
 	private double desconto;
 
 	// Lado N:1 da associação com o produto.
@@ -37,11 +43,13 @@ public class ItemProdutoVenda {
 	// foreignKey(...) dá um NOME customizado à constraint de FK no banco
 	// ("produto_fk"), útil para identificar o erro em logs/mensagens do banco.
 	@JoinColumn(name = "produto_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "produto_fk"))
+	@NotNull(message = "Produto deve ser informado")
 	private ProdutoJL produtoJL;
 
 	// Lado N:1 da associação com a venda.
 	@ManyToOne
 	@JoinColumn(name = "vendacompra_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "vendacompra_fk"))
+	@NotNull(message = "Venda Compra deve ser informada")
 	private VendaCompra vendaCompra;
 
 	// Getters e setters padrão.

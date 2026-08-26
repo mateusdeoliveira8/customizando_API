@@ -8,6 +8,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity // Mapeia essa classe para uma tabela do banco.
 public class Endereco {
@@ -20,11 +23,23 @@ public class Endereco {
 
 	// Campos simples, sem validação (@NotNull/@NotBlank) — diferente da
 	// Categoria1, aqui não há nenhuma restrição de preenchimento obrigatório.
+
+	@NotBlank(message = "A rua deve ser informada")
 	private String rua;
+
+	@NotNull(message = "O número deve ser informado")
 	private int numero;
+
+	@NotBlank(message = "O bairro deve ser informado")
 	private String bairro;
+
+	@NotBlank(message = "A cidade deve ser informada")
 	private String cidade;
+
+	@NotBlank(message = "A UF deve ser informada")
+	@Size(min = 2, max = 2, message = "A UF deve ter 2 caracteres")
 	private String uf;
+
 
 	// Relação N:1 -> vários Endereços pertencem a UMA Pessoa.
 	@ManyToOne
@@ -37,6 +52,7 @@ public class Endereco {
 	// @JsonIgnoreProperties("enderecos").
 	// Do jeito que está, é código morto (não tem efeito real na serialização).
 	@JsonIgnoreProperties
+	@NotNull(message = "A pessoa deve ser informada")
 	private Pessoa pessoa;
 
 	// Construtor vazio manual (aqui não usou Lombok @NoArgsConstructor como na

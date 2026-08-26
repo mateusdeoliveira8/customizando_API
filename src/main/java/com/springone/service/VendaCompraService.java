@@ -1,11 +1,13 @@
 package com.springone.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.springone.dto.VendaCompraDTO;
 import com.springone.entity.ItemProdutoVenda;
 import com.springone.entity.VendaCompra;
 import com.springone.exception.MsgApiException;
@@ -110,6 +112,75 @@ public class VendaCompraService {
 
 	public void deletar(Long id) {
 		vendaCompraRepository.deleteById(id);
+	}
+
+	public VendaCompra ataulzar(VendaCompra vendaCompra) {
+		return vendaCompraRepository.saveAndFlush(vendaCompra);
+	}
+
+	/*
+	 * public List<VendaCompraDTO> buscarVendaPorNomeDoClienteDTO(String nome) {
+	 * 
+	 * List<VendaCompra> vendas =
+	 * vendaCompraRepository.buscarVendaPorNomeDoCliente(nome);
+	 * 
+	 * List<VendaCompraDTO> lista = new ArrayList<>();
+	 * 
+	 * for (VendaCompra venda : vendas) {
+	 * 
+	 * VendaCompraDTO dto = new VendaCompraDTO(venda);
+	 * 
+	 * lista.add(dto); }
+	 * 
+	 * return lista; }
+	 */
+
+	public List<VendaCompraDTO> buscarVendaPorNomeDoClienteDTO(String nome) {
+
+		// "A variável vendas recebe o resultado do método que busca as vendas pelo nome
+		// do cliente."
+		List<VendaCompra> vendas = vendaCompraRepository.buscarVendaPorNomeDoCliente(nome);
+
+		// cria uma lista vazia para armazenar os dtos
+		List<VendaCompraDTO> lista = new ArrayList<>();
+
+		// percorre lista vendas e adicoana na variavel
+		for (VendaCompra venda : vendas) {
+
+			// cria um ibjeto dto
+			VendaCompraDTO dto = new VendaCompraDTO();
+			// "Aqui eu chamo os métodos do DTO, passando a venda atual para ele preencher
+			// as informações."
+			dto.preecnherItens(venda);
+			dto.preencherVenda(venda);
+
+			lista.add(dto);
+		}
+
+		return lista;
+
+	}
+
+	public List<VendaCompraDTO> buscarPorData02(Date data) {
+
+		// variavel listadata recebe o valor do metodo buscavendapordata
+		List<VendaCompra> listaData = vendaCompraRepository.buscarVendaPorData(data);
+
+		// cria uma lista vazia chama dataDtos
+		List<VendaCompraDTO> dataDtos = new ArrayList<>();
+
+		// percorre a listaData e guarda na variavel vendaLista
+		for (VendaCompra venda : listaData ) {
+
+			// criado um novo objeto chamado listaDto
+			VendaCompraDTO dto = new VendaCompraDTO();
+
+			dto.buscarPorData02(venda);
+
+			dataDtos.add(dto);
+		}
+		return dataDtos;
+
 	}
 
 }
