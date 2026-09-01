@@ -39,9 +39,9 @@ public class ItemProdutoVenda {
 	private double desconto;
 
 	// Lado N:1 da associação com o produto.
-	@ManyToOne
 	// foreignKey(...) dá um NOME customizado à constraint de FK no banco
 	// ("produto_fk"), útil para identificar o erro em logs/mensagens do banco.
+	@ManyToOne
 	@JoinColumn(name = "produto_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "produto_fk"))
 	@NotNull(message = "Produto deve ser informado")
 	private ProdutoJL produtoJL;

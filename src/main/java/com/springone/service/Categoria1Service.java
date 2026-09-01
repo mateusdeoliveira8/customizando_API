@@ -5,6 +5,9 @@ package com.springone.service; // Define que esta classe pertence ao pacote "ser
 import java.util.List; // Importa a interface List, utilizada para trabalhar com listas de objetos.
 
 import org.springframework.beans.factory.annotation.Autowired; // Permite ao Spring realizar a injeção automática de dependências.
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service; // Indica ao Spring que esta classe é um Service.
 
 import com.springone.entity.Categoria1; // Importa a entidade Categoria1.
@@ -123,6 +126,11 @@ public class Categoria1Service {
 
 		// Remove a categoria do banco de dados utilizando o ID.
 		categoria1Repository.deleteById(id);
+
+	}
+
+	public Page<Categoria1> listaPaginada(int page, int size) {
+		return categoria1Repository.findAll(PageRequest.of(page, size, Sort.by("nome")));
 
 	}
 }

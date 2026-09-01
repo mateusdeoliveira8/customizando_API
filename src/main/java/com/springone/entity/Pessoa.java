@@ -28,7 +28,7 @@ public class Pessoa {
 	private String idade; // String em vez de int — evita erro de parsing, mas não valida se é número
 
 	@NotBlank(message = "O CPF deve ser informado")
-	@Size(min = 11, max = 11, message = "O CPF deve ter 11 dígitos")
+	@Size(min = 10, max = 20, message = "O CPF deve ter 11 dígitos")
 	private String cpf;
 
 

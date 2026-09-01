@@ -4,13 +4,16 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springone.dto.itemProdutoVendaDTO;
 import com.springone.entity.ItemProdutoVenda;
 import com.springone.service.ItemProdutoVendaService;
 
@@ -45,6 +48,14 @@ public class ItemProdutoVendaController {
 
 	public ResponseEntity<List<ItemProdutoVenda>> listar() {
 		return ResponseEntity.ok(itemprodutovendaservice.listar());
+	}
+
+	@GetMapping(value = "/listaPaginada", produces = "application/json;charset=UTF-8")
+	public ResponseEntity<List<itemProdutoVendaDTO>> listaPaginada(@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "10") int size) {
+
+		List<itemProdutoVendaDTO> pagina = itemprodutovendaservice.listaPaginada(page, size);
+		return ResponseEntity.ok(pagina);
 	}
 }
 

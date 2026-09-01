@@ -3,6 +3,9 @@ package com.springone.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.springone.entity.Endereco;
@@ -105,6 +108,11 @@ public class EnderecoService {
 			// Se encontrou, retorna o endereço encontrado.
 			return endereco;
 		}
+	}
+
+	public Page<Endereco> listaPaginada(int page, int size) {
+		return enderecoRepository.findAll(PageRequest.of(page, size, Sort.by("rua")));
+
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -65,6 +66,14 @@ public class ControllerVendaCompra {
 
 	public ResponseEntity<List<VendaCompra>> buscarVendaPorData(@RequestParam Date date) {
 		return ResponseEntity.ok(vendacompraservice.buscarVendaPorData(date));
+	}
+
+	@GetMapping(value = "/listaPaginada", produces = "application/json;charset=UTF-8")
+	public ResponseEntity<List<VendaCompra>> listaPaginada(@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "10") int size) {
+
+		Page<VendaCompra> pagina = vendacompraservice.listaPaginada(page, size);
+		return ResponseEntity.ok(pagina.getContent());
 	}
 
 }
