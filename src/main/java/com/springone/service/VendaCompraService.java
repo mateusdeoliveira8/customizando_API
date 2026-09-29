@@ -191,4 +191,23 @@ public class VendaCompraService {
 
 	}
 
+	public List<VendaCompraDTO> listaPaginacaoDTO(int page, int size) {
+
+		// Busca as vendas no banco, de forma paginada e ordenada por ID
+		List<VendaCompra> lista = vendaCompraRepository.findAll(PageRequest.of(page, size, Sort.by("id"))).getContent();
+
+		// Cria uma lista vazia para guardar os DTOs
+		List<VendaCompraDTO> listaDtos = new ArrayList<>();
+
+		// Percorre cada venda encontrada
+		for (VendaCompra item : lista) {
+
+			// Converte a venda em DTO e adiciona na lista
+			listaDtos.add(new VendaCompraDTO(item));
+		}
+
+		// Retorna a lista de DTOs
+		return listaDtos;
+	}
+
 }

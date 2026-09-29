@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.springone.entity.ItemProdutoVenda;
 import com.springone.entity.VendaCompra;
 
@@ -23,6 +24,8 @@ public class VendaCompraDTO {
 	private Long id;
 	private String nomeCliente;
 	private List<itemProdutoVendaDTO> itensDtos;
+
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date data;
 
 	public Date getData() {
@@ -61,9 +64,11 @@ public class VendaCompraDTO {
 	public void preencherVenda(VendaCompra vendaCompra) {
 
 		this.id = vendaCompra.getId();
+		this.data = vendaCompra.getData();
 
 		if (vendaCompra.getPessoa() != null) {
 			this.nomeCliente = vendaCompra.getPessoa().getNome();
+
 		}
 
 	}

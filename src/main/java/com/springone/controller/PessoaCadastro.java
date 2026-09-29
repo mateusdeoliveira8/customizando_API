@@ -3,6 +3,7 @@ package com.springone.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -97,5 +98,14 @@ public class PessoaCadastro {
 
 		return ResponseEntity.ok(cadastrobuscaCPF);
 	}
+
+	@GetMapping(value = "/listaPaginada", produces = "application/json;charset=UTF-8")
+	public ResponseEntity<List<Pessoa>> listaPaginada(@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "10") int size) {
+
+		Page<Pessoa> pagina = pessoaService.listaPaginada(page, size);
+		return ResponseEntity.ok(pagina.getContent());
+	}
+
 
 }

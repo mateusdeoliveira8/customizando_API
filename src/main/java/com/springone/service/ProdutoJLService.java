@@ -3,6 +3,9 @@ package com.springone.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.springone.entity.ProdutoJL;
@@ -172,5 +175,10 @@ public class ProdutoJLService {
 
 		// Chama o método do repository, mas não faz nada com o resultado dele.
 		produtojLRepository.possuiEstoque(idProduto);
+	}
+
+	public Page<ProdutoJL> listaPaginada(int page, int size) {
+		return produtojLRepository.findAll(PageRequest.of(page, size, Sort.by("nome")));
+
 	}
 }

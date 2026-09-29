@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import com.springone.entity.Endereco;
 import com.springone.service.EnderecoService;
@@ -23,6 +24,9 @@ public class ControllerEndereco {
 
 	@Autowired
 	private EnderecoService enderecoService;
+
+	@Autowired
+	private RestTemplate restTemplate;
 
 
 	// ==========================
@@ -77,5 +81,16 @@ public class ControllerEndereco {
 		return ResponseEntity.ok(pagina.getContent());
 	}
 
+	@GetMapping("/buscaCep/{cep}")
+	public ResponseEntity<String> buscarCep(@PathVariable("cep") String cep) {
+		
+		cep = cep.replaceAll("\\D", "");
+
+		String url = "https://viacep.com.br/ws/{cep}/json/";
+
+		String json = restTemplate.getForObject(url, String.class, cep);
+
+		return ResponseEntity.ok(json);
+	}
 
 }

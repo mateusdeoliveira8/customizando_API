@@ -55,7 +55,7 @@ public class ItemProdutoVendaService {
 		List<ItemProdutoVenda> lista = itemProdutoVendaRepository.findAll(PageRequest.of(page, size, Sort.by("id")))
 				.getContent();
 
-		List<itemProdutoVendaDTO> listaDTO = new ArrayList();
+		List<itemProdutoVendaDTO> listaDTO = new ArrayList<>();
 		
 		for (ItemProdutoVenda itemprodutovenda : lista) {
 

@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.springone.dto.CadastroDTO;
@@ -22,6 +25,7 @@ public class PessoaService {
 	// Injeção de dependência do repositório responsável por acessar
 	// a tabela/entidade Pessoa no banco de dados.
 	private PessoaRepository pessoaRepository;
+
 
 	// Método responsável por CADASTRAR uma nova pessoa, com validações antes de
 	// salvar.
@@ -167,4 +171,11 @@ public class PessoaService {
 
 		return lista;
 	}
+
+	public Page<Pessoa> listaPaginada(int page, int size) {
+		return pessoaRepository.findAll(PageRequest.of(page, size, Sort.by("nome")));
+
+	}
+
+
 }
