@@ -8,15 +8,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.springone.dto.FornecedorDTO;
+import com.springone.entity.Endereco;
 import com.springone.entity.Fornecedor;
 import com.springone.exception.MsgApiException;
 import com.springone.repository.FornecedorRepository;
+import com.springone.repository.PessoaRepository;
 
 @Service
 public class FornecedorService {
 
 	@Autowired
 	FornecedorRepository fornecedorRepository;
+
+	@Autowired
+	PessoaRepository pessoaRepository;
 
 	@Autowired
 	RestTemplate restTemplate;
@@ -29,7 +34,20 @@ public class FornecedorService {
 		fornecedor.setPorte(dto.getPorte());
 		fornecedor.setRazao_social(dto.getRazao_social());
 
+
+		Endereco endereco = new Endereco();
+
+		endereco.setBairro(dto.getBairro());
+		endereco.setNumero(Integer.parseInt(dto.getNumero()));
+		endereco.setRua(dto.getLogradouro());
+		endereco.setCidade(dto.getMunicipio());
+		endereco.setUf(dto.getUf());
+		endereco.setPessoa(pessoaRepository.buscaporCPF("07263893300"));
+		fornecedor.setEndereco(endereco);
+
+
 		return fornecedorRepository.save(fornecedor);
+
 
 	}
 
@@ -76,5 +94,20 @@ public class FornecedorService {
 		return dto.getBody();
 
 	}
+
+	public String consultar01(String cnpj) {
+
+		String url = "https://brasilapi.com.br/api/cnpj/v1/" + cnpj.replaceAll("\\D", "");
+
+		ResponseEntity<String> dto = restTemplate.getForEntity(url, String.class);
+
+		return dto.getBody();
+
+	}
+	
+	
+	
+	
+
 
 }

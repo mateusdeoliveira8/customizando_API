@@ -4,10 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.springone.dto.CadastroDTO;
 import com.springone.dto.EnderecoDTO;
@@ -25,6 +31,12 @@ public class PessoaService {
 	// Injeção de dependência do repositório responsável por acessar
 	// a tabela/entidade Pessoa no banco de dados.
 	private PessoaRepository pessoaRepository;
+
+	@Autowired
+	RestTemplate restTemplate;
+
+	@Value(value = "${integracao.token.cpfbrasil}")
+	String cpfbrasil;
 
 
 	// Método responsável por CADASTRAR uma nova pessoa, com validações antes de
@@ -177,5 +189,37 @@ public class PessoaService {
 
 	}
 
+	public String consultarcpf(String cpf) {
 
+		// Instancia HttpHeaders para definir os cabeçalhos HTTP
+		// que serão enviados na requisição à API externa.
+		HttpHeaders headers = new HttpHeaders();
+
+		// Adiciona a chave de autenticação exigida pela API.
+		// A variável cpfbrasil contém a credencial de acesso.
+		headers.set("X-API-KEY", cpfbrasil);
+
+		// Define o formato de conteúdo esperado na resposta HTTP.
+		// Neste caso, a aplicação espera receber dados em JSON.
+		headers.set("Accept", "application/json");
+
+		// Cria uma entidade HTTP contendo os cabeçalhos configurados.
+		// Void indica que não será enviado um corpo na requisição.
+		HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+		// Executa uma requisição HTTP GET para o endpoint externo.
+		// O CPF recebido como parâmetro é concatenado à URL.
+		// A entidade entity envia os cabeçalhos de autenticação.
+		// String.class determina que o corpo da resposta será tratado como String.
+		ResponseEntity<String> response = restTemplate.exchange("https://api.cpf-brasil.org/cpf/" + cpf, HttpMethod.GET,
+				entity, String.class);
+
+		// Extrai o corpo da resposta HTTP, que contém os dados retornados
+		// pela API externa, normalmente no formato JSON.
+		String body = response.getBody();
+
+		// Retorna o conteúdo da resposta para o componente
+		// que realizou a chamada ao método da camada Service.
+		return body;
+	}
 }

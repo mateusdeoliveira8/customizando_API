@@ -26,7 +26,7 @@ public class FornecedorController {
 	@Autowired
 	FornecedorService fornecedorService;
 
-	@GetMapping("/salvar")
+	@PostMapping("/salvar")
 	public ResponseEntity<Fornecedor> salvar(@RequestBody @Valid Fornecedor fornecedor) {
 		Fornecedor fornecedor2 = fornecedorService.salvar(fornecedor);
 		return ResponseEntity.ok(fornecedor2);
@@ -51,6 +51,12 @@ public class FornecedorController {
 	public ResponseEntity<FornecedorDTO> consultar(@PathVariable String cnpj) {
 
 		return ResponseEntity.ok(fornecedorService.consultar(cnpj));
+	}
+
+	@GetMapping("/cnpj01/{cnpj}")
+	public ResponseEntity<String> consultar01(@PathVariable String cnpj) {
+
+		return ResponseEntity.ok(fornecedorService.consultar01(cnpj));
 	}
 
 }

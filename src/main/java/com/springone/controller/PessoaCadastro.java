@@ -107,5 +107,12 @@ public class PessoaCadastro {
 		return ResponseEntity.ok(pagina.getContent());
 	}
 
+	@GetMapping("/consultacpf")
+	public ResponseEntity<String> buscarPorCpf01(@RequestParam String cpf) {
+		String cadastrobuscaCPF = pessoaService.consultarcpf(cpf);
+
+		return ResponseEntity.ok(cadastrobuscaCPF);
+	}
+
 
 }
